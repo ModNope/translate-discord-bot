@@ -139,7 +139,7 @@ func MessageCleaner(mes string)string{
 	if len(msg) == 1 {
 		return msg[0]
 	}
-	selector := "-"
+	var selector string = "-"
 	var result string
 	var del = true
 	var counter int = 0
@@ -151,11 +151,10 @@ func MessageCleaner(mes string)string{
 			counter++
 		}else{
 			if del{
-				result += "-"+"\n"
+				result += selector+"\n"
 				del = false
 			}
 		}
-		
 	}
 	if counter == 0 {
 		return ""
