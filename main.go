@@ -145,14 +145,20 @@ func MessageCleaner(mes string)string{
 	var counter int = 0
 	for i:=range msg{
 		lines := strings.Trim(msg[i], " ")
-		if !(lines[:len(selector)] == selector){
-			result += lines+"\n"
-			del = true
-			counter++
+		if len(selector) < len(lines) {
+			if !(lines[:len(selector)] == selector){
+				result += lines+"\n"
+				del = true
+				counter++
+			}else{
+				if del{
+					result += selector+"\n"
+					del = false
+				}
+			}
 		}else{
-			if del{
-				result += selector+"\n"
-				del = false
+			if len(selector) == len(lines){
+				result += lines+"\n"
 			}
 		}
 	}
