@@ -87,6 +87,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	mes := m.Content
+	
+	mes = MessageCleaner(mes)
+	if mes == "" {
+		return
+	}
+	
 	lang, err := DetectLanguage(mes)
 	if err != nil {
 		return
@@ -126,4 +132,33 @@ func Translate(mes string, lang language.Tag) string {
 		trans = append(trans, r.Text)
 	}
 	return strings.Join(trans, "\n")
+}
+
+func MessageCleaner(mes string)string{
+	msg := strings.Split(mes, "\n")
+	if len(msg) == 1 {
+		return msg[0]
+	}
+	selector := "-"
+	var result string
+	var del = true
+	var counter int = 0
+	for i:=range msg{
+		lines := strings.Trim(msg[i], " ")
+		if !(lines[:len(selector)] == selector){
+			result += lines+"\n"
+			del = true
+			counter++
+		}else{
+			if del{
+				result += "-"+"\n"
+				del = false
+			}
+		}
+		
+	}
+	if counter == 0 {
+		return ""
+	}
+	return result
 }
